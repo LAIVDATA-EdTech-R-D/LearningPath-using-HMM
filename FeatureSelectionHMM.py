@@ -11,7 +11,7 @@ random.seed(42)
 np.random.seed(42)
 
 data = pd.read_csv('./data/aihub5_reshape.csv')
-meta = pd.read_csv('./out/rf_elasso.csv')
+meta = pd.read_csv('./out/rf_elasso_221227.csv')
 
 data.dropna(axis=0, inplace=True)
 data.reset_index(drop=True, inplace=True)
@@ -27,12 +27,15 @@ for col in cols:
 states = ["unlearned", "learned"]
 n_states = len(states)
 
-result_df = pd.DataFrame(columns=(['before', 'after', 'start_prob','trans_prob','emiss_prob', 'before_name', 'after_name']))
+result_df = pd.DataFrame(columns=(['before', 'after', 'imp', 'method', 'init_prob','V1', 'V2', 'V3','V4', 'before_name', 'after_name']))
 
 for i in range(len(meta)):
     target1 = meta['before'][i][2:]
     target2 = meta['after'][i][2:]
-    add_ary = [target1, target2]
+    
+    add_ary = ["X"+str(target1), "X"+str(target2)]
+    add_ary.append(meta['imp'][i])
+    add_ary.append(meta['method'][i])
 
     X = np.column_stack([data[target1].astype('int'), data[target2].astype('int')])
     start_probability = np.array([1 - X.T[0].sum()/len(X), X.T[0].sum()/len(X)])
@@ -57,14 +60,17 @@ for i in range(len(meta)):
         [0.1, 0.9]
     ])
 
-    model = hmm.CategoricalHMM(n_components=n_states, n_iter=len(X), startprob_prior=start_probability, 
-                                transmat_prior=transition_probability, emissionprob_prior=emission_probability)
+    model = hmm.GaussianHMM(n_components=n_states, n_iter=500, params = 's')
+    model.transmat_ = transition_probability
+    model.init_params = start_probability
 
     model.fit(X)
 
     add_ary.append(model.startprob_)
-    add_ary.append(model.transmat_)
-    add_ary.append(model.emissionprob_)
+    add_ary.append(model.transmat_[0][0]) # V1
+    add_ary.append(model.transmat_[1][0]) # V2
+    add_ary.append(model.transmat_[0][1]) # V3
+    add_ary.append(model.transmat_[1][1]) # V4
 
     add_ary.append(meta['before_name'][i])
     add_ary.append(meta['after_name'][i])
@@ -75,7 +81,9 @@ for i in range(len(meta)):
 
     target1 = meta['after'][i][2:]
     target2 = meta['before'][i][2:]
-    add_ary = [target1, target2]
+    add_ary = ["X"+str(target1), "X"+str(target2)]
+    add_ary.append(meta['imp'][i])
+    add_ary.append(meta['method'][i])
 
     X = np.column_stack([data[target1].astype('int'), data[target2].astype('int')])
     start_probability = np.array([1 - X.T[0].sum()/len(X), X.T[0].sum()/len(X)])
@@ -100,18 +108,22 @@ for i in range(len(meta)):
         [0.1, 0.9]
     ])
 
-    model = hmm.CategoricalHMM(n_components=n_states, n_iter=100, startprob_prior=start_probability, 
-                                transmat_prior=transition_probability, emissionprob_prior=emission_probability)
+    model = hmm.GaussianHMM(n_components=n_states, n_iter=500, params = 's')
+    model.transmat_ = transition_probability
+    model.init_params = start_probability
 
     model.fit(X)
 
     add_ary.append(model.startprob_)
-    add_ary.append(model.transmat_)
-    add_ary.append(model.emissionprob_)
+    add_ary.append(model.transmat_[0][0]) # V1
+    add_ary.append(model.transmat_[1][0]) # V2
+    add_ary.append(model.transmat_[0][1]) # V3
+    add_ary.append(model.transmat_[1][1]) # V4
 
     add_ary.append(meta['after_name'][i])
     add_ary.append(meta['before_name'][i])
     
     result_df = result_df.append(pd.Series(add_ary, index=result_df.columns), ignore_index=True)
 
-result_df.to_csv('./out/FSHMM_221223.csv', index=False, encoding='utf-8-sig')
+result_df = result_df.astype('str')
+result_df.to_csv('./out/FSHMM_G_221227.csv', index=False, encoding='utf-8-sig')

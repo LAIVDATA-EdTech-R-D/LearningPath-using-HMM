@@ -30,10 +30,10 @@ n_states = len(states)
 observations = ["correct", "incorrect"]
 n_observations = len(observations)
 
-result_df = pd.DataFrame(columns=(['before', 'after', 'init_prob','trans_prob','emiss_prob', 'before_name', 'after_name']))
+result_df = pd.DataFrame(columns=(['before', 'after', 'init_prob','V1', 'V2', 'V3','V4', 'before_name', 'after_name']))
 
 for target1, target2 in permutation_list:
-  add_ary = [target1, target2]
+  add_ary = ["X"+str(target1), "X"+str(target2)]
 
   X = np.column_stack([data[target1].astype('int'), data[target2].astype('int')])
   start_probability = np.array([1-X.T[0].sum()/len(X), X.T[0].sum()/len(X)])
@@ -58,14 +58,21 @@ for target1, target2 in permutation_list:
     [0.1, 0.9]
   ])
 
-  model = hmm.CategoricalHMM(n_components=n_states, n_iter=len(X), startprob_prior=start_probability, 
-                                transmat_prior=transition_probability, emissionprob_prior=emission_probability, params = 's')
+  
+  model = hmm.GaussianHMM(n_components=n_states, n_iter=500, params = 's')
+  model.transmat_ = transition_probability
+  model.init_params = start_probability
 
   model.fit(X)
 
   add_ary.append(model.startprob_)
-  add_ary.append(model.transmat_)
-  add_ary.append(model.emissionprob_)
+  add_ary.append(model.transmat_[0][0]) # V1
+  add_ary.append(model.transmat_[1][0]) # V2
+  add_ary.append(model.transmat_[0][1]) # V3
+  add_ary.append(model.transmat_[1][1]) # V4
+  #add_ary.append(model.emissionprob_)
+  #add_ary.append("-")
+  
   
   cond = meta['knowledgeTag'] == int(target1)
   chapter_name1 = meta[cond]['chapter_name'].unique()[0]
@@ -76,4 +83,6 @@ for target1, target2 in permutation_list:
   add_ary.append(chapter_name2)
   
   result_df = result_df.append(pd.Series(add_ary, index=result_df.columns), ignore_index=True)
-result_df.to_csv('./out/OnlyHMM_test_221223.csv', index=False, encoding='utf-8-sig')
+
+result_df = result_df.astype('str')
+result_df.to_csv('./out/OnlyHMM_G_221227.csv', index=False, encoding='utf-8-sig')
