@@ -1,0 +1,40 @@
+digraph Directed {
+	KC01
+	KC02
+	KC03
+	KC04
+	KC05
+	KC06
+	KC07
+	KC08
+	KC09
+	KC10
+	KC11
+	KC12
+	KC13
+	KC02 -> KC01 [color=blue]
+	KC06 -> KC05 [color=blue]
+	KC08 -> KC05 [color=gray style=dashed]
+	KC08 -> KC06 [color=gray style=dashed]
+	KC11 -> KC09 [color=gray style=dashed]
+	KC11 -> KC10 [color=blue]
+	KC04 -> KC03 [color=gray style=dashed]
+	KC05 -> KC04 [color=gray style=dashed]
+	KC06 -> KC04 [color=gray style=dashed]
+	KC09 -> KC04 [color=gray style=dashed]
+	KC10 -> KC04 [color=gray style=dashed]
+	KC11 -> KC04 [color=gray style=dashed]
+	KC12 -> KC04 [color=gray style=dashed]
+	KC13 -> KC04 [color=gray style=dashed]
+	KC10 -> KC11 [color=red]
+	KC05 -> KC06 [color=red]
+	KC01 -> KC02 [color=red]
+	KC13 -> KC11 [color=red]
+	KC11 -> KC13 [color=red]
+	KC08 -> KC07 [color=red]
+	KC07 -> KC08 [color=red]
+	KC09 -> KC10 [color=red]
+	KC10 -> KC09 [color=red]
+	KC05 -> KC12 [color=red]
+	KC12 -> KC11 [color=red]
+}
