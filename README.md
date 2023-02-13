@@ -24,12 +24,13 @@ cd PathAnalysis
 ### (2) AI-Hub dataset
 AI-Hub(Mathematics learner's ability level measurement data) mathmatics dataset can be found [here](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100). We extracting the learner's log related with Addition & Subtraction. Data Format is:  
 |Learner no. \ KC|KC01|KC02|...|KC07|
-|------|---|---|---|---|
+|:-:|:-:|:-:|:-:|:-:|
 |1|1|0|...|1|
 |2|1|0|...|1|
 |...|...|...|...|...|
 |183|1|1|...|1|
-0: Incorrect, 1: Correct 
+
+(0: Incorrect, 1: Correct)
 
 ### (3) Analysis
 * KC Relation Selection using LASSO & RF
