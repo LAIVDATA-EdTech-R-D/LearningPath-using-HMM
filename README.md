@@ -2,15 +2,15 @@
 
 This is the official implementations of **On adaptive learning paths using hidden Markov models**(JKDAS, 2023.02). For technical details, please refer to:  
 
-**On adaptive learning paths using hidden Markov models** [[DOI]()]
-Hyunhee Choi, Yunji Lee, Hayun Lee
+**On adaptive learning paths using hidden Markov models** [[DOI]()]  
+Hyunhee Choi, Yunji Lee, Hayun Lee  
 ![img](./img/PathAnalysisII.jpg)
 
 ### (1) Setup
 This code has been tested with R 4.2.2, Python 3.8, hmmlearn 0.2.8, CUDA 11.2 and cuDNN 8.0 on Ubuntu 20.04.  
 * Clone the repository
 ```code
-git clone https://github.com/LAIVDATA-EdTech-R-D/Path-Analysis.git
+git clone https://github.com/LAIVDATA-EdTech-R-D/LearningPath-using-HMM.git
 ```
 * Setup dependencies
 ```code
@@ -22,7 +22,7 @@ sudo apt-get install r-base
 cd PathAnalysis
 ```
 ### (2) AI-Hub dataset
-AI-Hub(Mathematics learner's ability level measurement data) mathmatics dataset can be found [here](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100). We extracting the learner's log related with Addition & Subtraction. Data Format is:  
+AI-Hub(Mathematics learner's ability level measurement data) mathmatics dataset can be found [here](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=133). We extracting the learner's log related with Addition & Subtraction. Data Format is:  
 |Learner no. \ KC|KC01|KC02|...|KC07|
 |:-:|:-:|:-:|:-:|:-:|
 |1|1|0|...|1|
